@@ -1,0 +1,49 @@
+#include <iostream>
+#include <cstdlib> 
+#include <ctime> 
+
+int getRandomNumber(int min, int max){
+    static const double fraction = 1.0 / (static_cast<double>(RAND_MAX) + 1.0);
+    return static_cast<int>(rand() * fraction * (max - min + 1) + min);
+}
+
+bool play(int guesses, int number){
+    for (int i = 1; i <= guesses; i++){
+        std::cout << "Guess #" << i << ": ";
+        int guess;
+        std::cin >> guess;
+        if (guess > number) std::cout << "Your number is too high.\n";
+        else if (guess < number) std::cout << "Your number is too low.\n";
+        else return true;
+    }
+    return false;
+}
+
+bool play2(){
+    char ch;
+    do{
+        std::cout << "Would you like to play again ( YES(y)/ NO(n) )? ";
+        std::cin >> ch;
+    } while (ch != 'y' && ch != 'n');
+
+    return (ch == 'y');
+}
+
+int main(){
+    srand(static_cast<unsigned int>(time(0)));
+    rand();
+    std::cout << "Let's play an interesting game.\n";
+    std::cout << "Enter the maximum number: ";
+    int n;
+    std::cin >> n;
+    do{
+        int number = getRandomNumber(1, n); 
+        std::cout << "I'm thinking of a number. You have " << n/4 << " tries to guess the right number.\n";
+        bool won = play(n, number);
+        if (won) std::cout << "YOUR NUMBER IS RIGHT! YOU'RE WINNER!\n";
+        else std::cout << "You lost the game. My number was " << number << "\n";
+    } while (play2());
+
+    std::cout << "It's a pity! Thank you for playing.\n";
+    return 0;
+} 
